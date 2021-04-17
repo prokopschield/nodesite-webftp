@@ -22,5 +22,16 @@
 		"cookie": "^0.4.1",
 		"doge-config": "^0.0.5",
 		"nodesite.eu": "^1.0.23"
-	}
+	},
+	"directories": {
+		"lib": "lib"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/prokopschield/nodesite-webftp.git"
+	},
+	"bugs": {
+		"url": "https://github.com/prokopschield/nodesite-webftp/issues"
+	},
+	"homepage": "https://github.com/prokopschield/nodesite-webftp#readme"
 }
