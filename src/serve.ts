@@ -4,6 +4,8 @@ import path from 'path';
 
 import {
 	files,
+	folder,
+	hidden,
 } from './config';
 
 import {
@@ -36,9 +38,14 @@ function nicepath(parts: string[], filename?: string) {
 }
 
 function serveFile (fspath: string): ListenerResponse {
-	const root = path.resolve('.');
+	const root = path.resolve(folder);
 	if (!fspath.includes(root)) return 'Error: accessed file not in allowed directory';
 	if (path.resolve(fspath) == path.resolve('./config/nodesite-webftp.json')) return 'Error: You may not read this config file.';
+	for (const h of hidden.array) {
+		if (fspath.includes(path.resolve(folder, h.toString()))) {
+			return 'Error: This file has been hidden.';
+		}
+	}
 	const data = fs.readFileSync(fspath);
 	const fn = path.basename(fspath);
 	return ({
@@ -61,7 +68,7 @@ export default function serve (request: NodeSiteRequest) {
 
 	let parts = request.uri.split('/').filter((a: string) => a);
 	
-	let fspath = path.resolve('.');
+	let fspath = path.resolve(folder);
 	let vspath = files;
 	let fsflag = true;
 	let vsflag = true;

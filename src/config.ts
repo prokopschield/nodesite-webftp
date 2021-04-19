@@ -6,6 +6,11 @@ const config = getConfig('nodesite-webftp', {
 	domain: `ftp-${Math.floor(Math.random() * 10000)}`,
 	salt: 'Changing this value will invalidate all credentials: ' + blake2sHex('' + new Date + Math.random()),
 	folder: path.resolve('.'),
+	hidden: [
+		'config/nodesite-webftp.json',
+	],
+	files: {},
+	users: {},
 	allowUserCreation: true,
 	username: process.env.user || process.env.username || process.env.name || 'root',
 });
@@ -25,6 +30,7 @@ export default config;
 export const domain = config.__getString('domain');
 export const files = config.__getField('files');
 export const folder = config.__getString('folder');
+export const hidden = config.__getField('hidden');
 export const salt = config.__getString('salt');
 export const username = config.__getString('username');
 export const password = config.__getString('password');
