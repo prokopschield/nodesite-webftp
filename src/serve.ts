@@ -51,7 +51,7 @@ function serveFile (fspath: string): ListenerResponse {
 	return ({
 		statusCode: 200,
 		head: {
-			'Content-Type': contentType(fn) || 'application/octet-stream',
+			'Content-Type': contentType(fn) || 'text/plain',
 			'Content-Length': data.length.toString(),
 		},
 		body: data,
