@@ -66,7 +66,12 @@ export default function serve (request: NodeSiteRequest) {
 	const user = validateSession(session);
 	if (!user) return AuthenticationPage;
 
-	let parts = request.uri.split('/').filter((a: string) => a);
+	let parts = request.uri.split(/[\\\/]+/g)
+	.map(a => decodeURIComponent(a))
+	.filter((a: string) => (
+		a
+		&& !a.includes('..')
+	));
 	
 	let fspath = path.resolve(folder);
 	let vspath = files;

@@ -1,7 +1,7 @@
 {
 	"name": "nodesite-webftp",
 	"description": "WebFTP server fot NodeSite.eu",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"main": "lib/index.js",
 	"bin": {
 		"nodesite-webftp": "lib/cli.js"
@@ -21,7 +21,7 @@
 	"dependencies": {
 		"cookie": "^0.4.1",
 		"doge-config": "^0.0.6",
-		"nodesite.eu": "^1.0.23"
+		"nodesite.eu": "^1.2.0-5"
 	},
 	"directories": {
 		"lib": "lib"
