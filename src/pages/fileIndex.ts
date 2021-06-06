@@ -1,6 +1,7 @@
 import { ConfigField } from "doge-config";
 import { ValidConfigValue } from "doge-config/lib/types";
 import { posix as pathutil } from 'path';
+import config from '../config';
 
 export default function fileIndex (path: string, files: {
 	[index: string]: ValidConfigValue;
@@ -21,8 +22,7 @@ return (
 			((() => {
 				const entries: string[][] = [];
 				for (const key in {
-					'.': pathutil.resolve(path, '.'),
-					'..': pathutil.resolve(path, '..'),
+					[config.obj.lang.str.PARENT_DIRECTORY]: pathutil.resolve(path, '..'),
 					...files,
 				}) {
 					const file = files[key] || key;

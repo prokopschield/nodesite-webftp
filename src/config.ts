@@ -13,6 +13,9 @@ const config = getConfig('nodesite-webftp', {
 	users: {},
 	allowUserCreation: true,
 	username: process.env.user || process.env.username || process.env.name || 'root',
+	lang: {
+		PARENT_DIRECTORY: '<< Parent Directory',
+	},
 });
 
 if (!config.__getString('password')) {
