@@ -20,11 +20,13 @@ return (
 	<ul>
 		${
 			((() => {
-				const entries: string[][] = [];
-				for (const key in {
-					[config.obj.lang.str.PARENT_DIRECTORY]: pathutil.resolve(path, '..'),
-					...files,
-				}) {
+				const entries: string[][] = [
+					[
+						config.obj.lang.str.PARENT_DIRECTORY,
+						pathutil.resolve(path, '..'),
+					],
+				];
+				for (const key in files) {
 					const file = files[key] || key;
 					if (file instanceof ConfigField) {
 						entries.push([key, key + '/']);
