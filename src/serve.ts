@@ -42,7 +42,7 @@ function serveFile (fspath: string): ListenerResponse {
 	if (!fspath.includes(root)) return 'Error: accessed file not in allowed directory';
 	if (path.resolve(fspath) == path.resolve('./config/nodesite-webftp.json')) return 'Error: You may not read this config file.';
 	for (const h of hidden.array) {
-		if (fspath.includes(path.resolve(folder, h.toString()))) {
+		if (fspath.includes(path.resolve(folder, `${h}`))) {
 			return 'Error: This file has been hidden.';
 		}
 	}
@@ -102,11 +102,7 @@ export default function serve (request: NodeSiteRequest) {
 			return serveFile(fspath);
 		} else if (vsflag && vspath.__has(filename)) {
 			const fsfiles = fs.readdirSync(fspath);
-			const files: {
-				[index: string]: string | ConfigField
-			} = {
-				...vspath.__getField(filename),
-			}
+			const files = vspath.obj[filename].data;
 			for (const file of fsfiles) {
 				const stat = fs.statSync(path.resolve(fspath, file));
 				if (stat.isDirectory()) {
@@ -136,7 +132,7 @@ export default function serve (request: NodeSiteRequest) {
 	if (vspath.__has(filename)) {
 		const file = vspath.__get(filename);
 		if (file instanceof ConfigField) {
-			return fileIndex(nicepath(parts, filename), { ...file });
+			return fileIndex(nicepath(parts, filename), { ...file.data });
 		} else {
 			return ({
 				statusCode: 302,
@@ -147,5 +143,5 @@ export default function serve (request: NodeSiteRequest) {
 		}
 	}
 
-	return fileIndex(nicepath(parts), { ...vspath });
+	return fileIndex(nicepath(parts), { ...vspath.data });
 }
