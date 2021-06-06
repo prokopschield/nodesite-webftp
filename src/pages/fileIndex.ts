@@ -23,7 +23,7 @@ return (
 				const entries: string[][] = [
 					[
 						config.obj.lang.str.PARENT_DIRECTORY,
-						pathutil.resolve(path, '..'),
+						pathutil.resolve(path, '..').replace(/\/?$/, '/'),
 					],
 				];
 				for (const key in files) {
