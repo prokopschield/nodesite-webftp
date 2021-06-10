@@ -16,7 +16,7 @@ return (
 	<title>Index of ${path}</title>
 </head>
 <body>
-	<h1>Index of ${path}</h1>
+	<h1>${config.obj.lang.str.INDEX_OF.replace('%s', path)}</h1>
 	<ul>
 		${
 			((() => {

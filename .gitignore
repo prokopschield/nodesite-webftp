@@ -1,4 +1,4 @@
-config/nodesite-webftp.json
+config/
 lib/
 node_modules/
 package-lock.json

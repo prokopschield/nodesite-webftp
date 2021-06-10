@@ -14,7 +14,8 @@ const config = getConfig('nodesite-webftp', {
 	allowUserCreation: true,
 	username: process.env.user || process.env.username || process.env.name || 'root',
 	lang: {
-		PARENT_DIRECTORY: '<< Parent Directory',
+		INDEX_OF: 'Index of %s',
+		PARENT_DIRECTORY: '<< Parent Directory >>',
 	},
 });
 
