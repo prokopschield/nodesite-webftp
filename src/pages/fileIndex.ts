@@ -3,6 +3,8 @@ import { ValidConfigValue } from "doge-config/lib/types";
 import { posix as pathutil } from 'path';
 import config from '../config';
 
+const lang = config.obj.lang.str;
+
 export default function fileIndex (path: string, files: {
 	[index: string]: ValidConfigValue;
 }): string {
@@ -16,13 +18,13 @@ return (
 	<title>Index of ${path}</title>
 </head>
 <body>
-	<h1>${config.obj.lang.str.INDEX_OF.replace('%s', path)}</h1>
+	<h1>${lang.INDEX_OF.replace('%s', path)}</h1>
 	<ul>
 		${
 			((() => {
 				const entries: string[][] = [
 					[
-						config.obj.lang.str.PARENT_DIRECTORY,
+						lang.PARENT_DIRECTORY,
 						pathutil.resolve(path, '..').replace(/\/?$/, '/'),
 					],
 				];
@@ -40,7 +42,13 @@ return (
 						entries.push([file, file]);
 					}
 				}
-				return entries.map(a => `<li><a href="${a[1]}">${a[0]}</a></li>`).join('');
+				return entries.map(a => `
+<li>
+	${lang.TYPE_DELIMETER_LEFT}<a href="/plain${path}${a[1]}">${lang.TYPE_PLAIN}</a>${lang.TYPE_DELIMETER_RIGHT}
+	${lang.TYPE_DELIMETER_LEFT}<a href="/download${path}${a[1]}">${lang.TYPE_DOWNLOAD}</a>${lang.TYPE_DELIMETER_RIGHT}
+	<a href="${a[1]}">${a[0]}</a>
+</li>
+`).join('');
 			})())
 		}
 	</ul>

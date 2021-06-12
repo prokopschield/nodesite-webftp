@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import {
+	domain,
 	files,
 	folder,
 	hidden,
@@ -27,6 +28,7 @@ import {
 import {
 	ListenerResponse,
 	NodeSiteRequest,
+	rawwrite,
 } from 'nodesite.eu';
 
 import {
@@ -134,10 +136,17 @@ export default function serve (request: NodeSiteRequest) {
 		if (file instanceof ConfigField) {
 			return fileIndex(nicepath(parts, filename), { ...file.data });
 		} else {
+			rawwrite('static', domain, request.uri, file);
+			rawwrite('static', domain, `/download${request.uri}`, file, {
+				'content-type': 'application/octet-stream',
+			});
+			rawwrite('static', domain, `/plain${request.uri}`, file, {
+				'content-type': 'text/plain',
+			});
 			return ({
 				statusCode: 302,
 				head: {
-					location: `/static/${file}`,
+					location: `/static/${file}/${filename}`,
 				},
 			});
 		}

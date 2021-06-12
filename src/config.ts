@@ -7,7 +7,7 @@ const config = getConfig('nodesite-webftp', {
 	salt: 'Changing this value will invalidate all credentials: ' + blake2sHex('' + new Date + Math.random()),
 	folder: path.resolve('.'),
 	hidden: [
-		'config/nodesite-webftp.json',
+		'config',
 	],
 	files: {},
 	users: {},
@@ -16,6 +16,10 @@ const config = getConfig('nodesite-webftp', {
 	lang: {
 		INDEX_OF: 'Index of %s',
 		PARENT_DIRECTORY: '<< Parent Directory >>',
+		TYPE_DELIMETER_LEFT: '[',
+		TYPE_DELIMETER_RIGHT: ']',
+		TYPE_PLAIN: 'P',
+		TYPE_DOWNLOAD: 'D',
 	},
 });
 
