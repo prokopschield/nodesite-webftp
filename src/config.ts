@@ -23,6 +23,10 @@ const config = getConfig('nodesite-webftp', {
 	},
 });
 
+if (!config.str.domain.includes('.')) {
+	config.str.domain = `${config.str.domain}.nodesite.eu`;
+}
+
 if (!config.__getString('password')) {
 	const password = blake2sHex(config.__getString('salt') + new Date + Math.random()).substr(0, 16);
 	const hashedPassword = blake2sHex(config.__getString('salt') + password);

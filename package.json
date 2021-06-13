@@ -1,7 +1,7 @@
 {
 	"name": "nodesite-webftp",
 	"description": "WebFTP server fot NodeSite.eu",
-	"version": "0.0.7",
+	"version": "0.1.0-1",
 	"main": "lib/index.js",
 	"bin": {
 		"nodesite-webftp": "lib/cli.js"

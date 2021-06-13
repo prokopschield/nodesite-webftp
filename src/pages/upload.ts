@@ -1,4 +1,5 @@
 import cookie from 'cookie';
+import fs from 'fs';
 import {
 	files as BaseDirectory,
 } from '../config';
@@ -11,6 +12,8 @@ import {
 	ListenerResponse,
 	NodeSiteRequest,
 } from 'nodesite.eu';
+
+const upload_html = fs.readFileSync('./src/pages/upload.html');
 
 const UNAUTHORIZED = ({
 	statusCode: 200,
@@ -44,6 +47,7 @@ const UPLOAD_SUCCESS = ({
 });
 
 export default function upload (request: NodeSiteRequest): ListenerResponse {
+	if (request.method === 'GET') return upload_html;
 	if (!request.head.cookie) return UNAUTHORIZED;
 	const {
 		session,
@@ -56,7 +60,7 @@ export default function upload (request: NodeSiteRequest): ListenerResponse {
 		if (typeof req !== 'object') return INVALID_JSON;
 		if (!req.path || !req.hash) return INVALID_JSON;
 		if (req.hash?.length !== 64) return INVALID_JSON;
-		if (!req.hash.match(/^[0-9a-f]$/)) return INVALID_JSON;
+		if (!req.hash.match(/^[0-9a-f]{64}$/)) return INVALID_JSON;
 		const parts = req.path.toLowerCase().replace(/[^a-z0-9\/\.]+/ig, '-').split('/').filter((a: string) => a);
 		if (parts[0] !== user) parts.unshift(user);
 		let fn = parts.pop();

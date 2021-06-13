@@ -102,9 +102,9 @@ export default function serve (request: NodeSiteRequest) {
 		const fstat = fs.statSync(fspath);
 		if (!fstat.isDirectory()) {
 			return serveFile(fspath);
-		} else if (vsflag && vspath.__has(filename)) {
+		} else if ((filename === '.') || (vsflag && vspath.__has(filename))) {
 			const fsfiles = fs.readdirSync(fspath);
-			const files = vspath.obj[filename].data;
+			const files = { ...(filename === '.') ? vspath.data : vspath.obj[filename].data };
 			for (const file of fsfiles) {
 				const stat = fs.statSync(path.resolve(fspath, file));
 				if (stat.isDirectory()) {
@@ -146,7 +146,7 @@ export default function serve (request: NodeSiteRequest) {
 			return ({
 				statusCode: 302,
 				head: {
-					location: `/static/${file}/${filename}`,
+					location: filename,
 				},
 			});
 		}

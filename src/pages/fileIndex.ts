@@ -31,13 +31,13 @@ return (
 				for (const key in files) {
 					const file = files[key] || key;
 					if (file instanceof ConfigField) {
-						entries.push([key, key + '/']);
+						entries.push([key + '/', key + '/']);
 					} else if (typeof file !== 'string') {
 						entries.push([`${file}`, `${file}`]);
 					} else if (file[file.length - 1] === '/') {
 						entries.push([file, file]);
 					} else if (file.length === 64) {
-						entries.push([key, '/static/' + file])
+						entries.push([key, key])
 					} else {
 						entries.push([file, file]);
 					}
