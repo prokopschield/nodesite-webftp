@@ -1,21 +1,16 @@
 import cookie from 'cookie';
 import fs from 'fs';
-import {
-	files as BaseDirectory,
-} from '../config';
+import { ListenerResponse, NodeSiteRequest } from 'nodesite.eu';
+import path from 'path';
 
-import {
-	validateSession
-} from '../auth';
+import { validateSession } from '../auth';
+import { files as BaseDirectory } from '../config';
 
-import {
-	ListenerResponse,
-	NodeSiteRequest,
-} from 'nodesite.eu';
+const upload_html = fs.readFileSync(
+	path.resolve(__dirname, '../../src/pages/upload.html')
+);
 
-const upload_html = fs.readFileSync('./src/pages/upload.html');
-
-const UNAUTHORIZED = ({
+const UNAUTHORIZED = {
 	statusCode: 200,
 	head: {
 		'Content-Type': 'Application/Javascript',
@@ -23,9 +18,9 @@ const UNAUTHORIZED = ({
 	body: JSON.stringify({
 		error: 'Unauthorized',
 	}),
-});
+};
 
-const INVALID_JSON = ({
+const INVALID_JSON = {
 	statusCode: 200,
 	head: {
 		'Content-Type': 'Application/Javascript',
@@ -33,9 +28,9 @@ const INVALID_JSON = ({
 	body: JSON.stringify({
 		error: 'Invalid JSON',
 	}),
-});
+};
 
-const UPLOAD_SUCCESS = ({
+const UPLOAD_SUCCESS = {
 	statusCode: 200,
 	head: {
 		'Content-Type': 'Application/Javascript',
@@ -44,14 +39,12 @@ const UPLOAD_SUCCESS = ({
 		error: null,
 		success: true,
 	}),
-});
+};
 
-export default function upload (request: NodeSiteRequest): ListenerResponse {
+export default function upload(request: NodeSiteRequest): ListenerResponse {
 	if (request.method === 'GET') return upload_html;
 	if (!request.head.cookie) return UNAUTHORIZED;
-	const {
-		session,
-	} = cookie.parse(request.head.cookie);
+	const { session } = cookie.parse(request.head.cookie);
 	if (!session) return UNAUTHORIZED;
 	const user = validateSession(session);
 	if (!user) return UNAUTHORIZED;
@@ -61,7 +54,11 @@ export default function upload (request: NodeSiteRequest): ListenerResponse {
 		if (!req.path || !req.hash) return INVALID_JSON;
 		if (req.hash?.length !== 64) return INVALID_JSON;
 		if (!req.hash.match(/^[0-9a-f]{64}$/)) return INVALID_JSON;
-		const parts = req.path.toLowerCase().replace(/[^a-z0-9\/\.]+/ig, '-').split('/').filter((a: string) => a);
+		const parts = req.path
+			.toLowerCase()
+			.replace(/[^a-z0-9\/\.]+/gi, '-')
+			.split('/')
+			.filter((a: string) => a);
 		if (parts[0] !== user) parts.unshift(user);
 		let fn = parts.pop();
 		let dir = BaseDirectory;
