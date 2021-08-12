@@ -4,15 +4,16 @@ import path from 'path';
 
 const config = getConfig('nodesite-webftp', {
 	domain: `ftp-${Math.floor(Math.random() * 10000)}`,
-	salt: 'Changing this value will invalidate all credentials: ' + blake2sHex('' + new Date + Math.random()),
+	salt:
+		'Changing this value will invalidate all credentials: ' +
+		blake2sHex('' + new Date() + Math.random()),
 	folder: path.resolve('.'),
-	hidden: [
-		'config',
-	],
+	hidden: ['config'],
 	files: {},
 	users: {},
 	allowUserCreation: true,
-	username: process.env.user || process.env.username || process.env.name || 'root',
+	username:
+		process.env.user || process.env.username || process.env.name || 'root',
 	lang: {
 		INDEX_OF: 'Index of %s',
 		PARENT_DIRECTORY: '<< Parent Directory >>',
@@ -28,13 +29,15 @@ if (!config.str.domain.includes('.')) {
 }
 
 if (!config.__getString('password')) {
-	const password = blake2sHex(config.__getString('salt') + new Date + Math.random()).substr(0, 16);
+	const password = blake2sHex(
+		config.__getString('salt') + new Date() + Math.random()
+	).substr(0, 16);
 	const hashedPassword = blake2sHex(config.__getString('salt') + password);
 	config.__set('password', hashedPassword);
 	console.log(
 		`Default credentials:\r\n`,
 		`Username: ${config.__getString('username')}\r\n`,
-		`Password: ${password}\r\n`,
+		`Password: ${password}\r\n`
 	);
 }
 
