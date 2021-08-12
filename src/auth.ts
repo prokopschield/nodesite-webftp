@@ -1,10 +1,11 @@
+import { blake2sHex } from 'blakets';
+
 import config, {
 	username as rootUser,
 	password as rootPassword,
 	users,
 	salt,
 } from './config';
-const { blake2sHex } = require('blakejs');
 
 export function authenticate(username: string, password: string): boolean {
 	if (typeof username !== 'string') return false;

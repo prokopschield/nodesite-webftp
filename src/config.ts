@@ -1,5 +1,5 @@
+import { blake2sHex } from 'blakets';
 import { getConfig } from 'doge-config';
-const { blake2sHex } = require('blakejs');
 import path from 'path';
 
 const config = getConfig('nodesite-webftp', {
